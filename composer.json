@@ -1,0 +1,23 @@
+{
+    "name": "adrian/cl-msgraph",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Adrian\\CLMSGraph\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Adrian Stanescu",
+            "email": "adrianstanescu@thinkmedia.ro"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "microsoft/microsoft-graph": "^1.88",
+        "guzzlehttp/guzzle": "^7.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    }
+}

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+SCRIPTS_DIR=$(dirname "$0")
+
+# https://learn.microsoft.com/en-us/azure/active-directory/enterprise-users/licensing-service-plan-reference
+URL="https://download.microsoft.com/download/e/3/e/e3e9faf2-f28b-490a-9ada-c6089a1fc5b0/Product%20names%20and%20service%20plan%20identifiers%20for%20licensing.csv"
+
+curl -o "$SCRIPTS_DIR/../data/product-names.csv" "$URL"
