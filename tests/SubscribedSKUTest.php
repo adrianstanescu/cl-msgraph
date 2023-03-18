@@ -8,8 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
 final class SubscribedSKUTest extends TestCase {
     public static function setUpBeforeClass(): void {

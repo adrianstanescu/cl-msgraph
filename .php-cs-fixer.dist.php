@@ -36,5 +36,6 @@ return $config->setRules([
     'echo_tag_syntax' => false,
     'semicolon_after_instruction' => false,
     'no_alternative_syntax' => ['fix_non_monolithic_code' => false],
+    'php_unit_test_class_requires_covers' => false,
 ])
     ->setFinder($finder);

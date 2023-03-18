@@ -9,8 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
 final class CollectionTest extends TestCase {
     // TODO: find collection with mostly static content for tests

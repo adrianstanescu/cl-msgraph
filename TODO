@@ -4,6 +4,6 @@ Features:
         ☐ location with coordinates
 
 Chores:
-    ☐ fix code coverage
+    ✔ fix code coverage @done(23-03-18 17:12)
     ☐ update README
     ☐ packagist package @low 

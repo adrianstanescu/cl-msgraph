@@ -9,8 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
 final class AuthTest extends TestCase {
     public function testCanBeCreated(): void {
