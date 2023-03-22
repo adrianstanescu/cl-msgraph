@@ -23,7 +23,7 @@
     },
     "scripts": {
         "test": "phpunit",
-        "demo": "php -S localhost:8006 demo/router.php",
+        "demo": "php -S 127.0.0.1:8006 demo/router.php",
         "download-product-names": "./scripts/download-product-names.sh"
     }
 }

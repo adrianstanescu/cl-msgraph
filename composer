@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/usr/bin/php7.4 /usr/local/bin/composer $@

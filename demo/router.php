@@ -1,7 +1,8 @@
 <?php
-$path = str_replace('/', '-', substr($_SERVER['REQUEST_URI'], 1));
+list($path) = explode('?', $_SERVER['REQUEST_URI'], 2);
+$page = str_replace('/', '-', substr($path, 1));
 
-if ($path !== '' && !file_exists(__DIR__ . '/tests/' . $path . '.php')) {
+if ($page !== '' && !file_exists(__DIR__ . '/tests/' . $page . '.php')) {
     return false;
 }
 $menuItems = array_map(function ($item) {
@@ -14,9 +15,14 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 putenv('DEBUG=yes');
 
-$phpunitconfig = new SimpleXMLElement(file_get_contents(__DIR__ . '/../phpunit.xml'));
-foreach($phpunitconfig->php->env as $env) {
-    putenv("{$env['name']}={$env['value']}");
+if (file_exists(__DIR__ . '/../phpunit.xml')) {
+    $phpunitconfig = new SimpleXMLElement(file_get_contents(__DIR__ . '/../phpunit.xml'));
+    foreach($phpunitconfig->php->env as $env) {
+        if (getenv($env['name']) !== false) {
+            continue;
+        }
+        putenv("{$env['name']}={$env['value']}");
+    }
 }
 
 use Adrian\CLMSGraph\Graph;
@@ -51,15 +57,15 @@ Graph::configure(getenv('AZURE_CLIENT_ID'), getenv('AZURE_CLIENT_SECRET'), geten
                 <ul>
                     <li><a href="/">CLMSGraph demo</a></li>
                     <?php foreach($menuItems as $item): ?>
-                        <li><a href="/<?= $item ?>"<?= $item === $path ? 'role="button"' : '' ?>><?= ucfirst($item) ?></a></li>
+                        <li><a href="/<?= $item ?>"<?= $item === $page ? 'role="button"' : '' ?>><?= ucfirst($item) ?></a></li>
                     <?php endforeach; ?>
                 </ul>
             </nav>
         </header>
         <main>
             <section>
-                <h2><?= ucfirst($path) ?></h2>
-                <?php $path === '' ? include(__DIR__ . '/index.php') : include __DIR__ . '/tests/' . $path . '.php'; ?>
+                <h2><?= ucfirst($page) ?></h2>
+                <?php $page === '' ? include(__DIR__ . '/index.php') : include __DIR__ . '/tests/' . $page . '.php'; ?>
             </section>
         </main>
     </body>

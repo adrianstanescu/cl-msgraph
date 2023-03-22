@@ -3,17 +3,20 @@
 ## Development 
 
 1. `composer install`
-2. `cp phpunit.xml.dist phpunit.xml`
-3. Change these env vars in phpunit.xml
-- `AZURE_CLIENT_ID`
-- `AZURE_CLIENT_SECRET`
-- `AZURE_TENANT_ID`
-- `TEST_USER_ID`
-- `TEST_USER_EMAIL`
+1. Set required env vars
+    - `AZURE_CLIENT_ID`
+    - `AZURE_CLIENT_SECRET`
+    - `AZURE_TENANT_ID`
+    - `TEST_USER_ID`
+    - `TEST_USER_EMAIL`
+ 
+    a) `cp phpunit.xml.dist phpunit.xml` and fill values
 
-4. `composer run download-product-names`
-5. `composer run demo`
-6. `x-www-browser http://localhost:8006/`
+    b) through any other means   
+
+1. `composer run download-product-names`
+1. `composer run demo`
+1. `x-www-browser http://localhost:8006/`
 
 Try to use https://www.conventionalcommits.org/
 
