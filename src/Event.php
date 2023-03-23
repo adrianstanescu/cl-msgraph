@@ -16,7 +16,17 @@ class Event extends MSEvent {
     /**
      * @return Event
      */
-    public static function create(string $userID, DateTime $start, DateTime $end, string $subject, string $body = '', array $attendees = [], ?string $location = null) {
+    public static function create(
+        string $userID,
+        DateTime $start,
+        DateTime $end,
+        string $subject,
+        string $body = '',
+        array $attendees = [],
+        ?string $location = null,
+        bool $isOnlineMeeting = false,
+        ?string $onlineMeetingProvider = null
+    ) {
         $eventAttendees = array_map(function (string $a) {
             return new Attendee([
                 'emailAddress' => new EmailAddress([
@@ -40,6 +50,7 @@ class Event extends MSEvent {
                 ]);
             }
         }
+
         $event = new MSEvent([
             'start' => DateTimeTimeZoneExtensions::fromDateTime($start),
             'end' => DateTimeTimeZoneExtensions::fromDateTime($end),
@@ -50,6 +61,8 @@ class Event extends MSEvent {
             ]),
             'attendees' => $eventAttendees,
             'location' => $eventLocation,
+            'isOnlineMeeting' => $isOnlineMeeting,
+            'onlineMeetingProvider' => $onlineMeetingProvider ?? getenv('DEFAULT_ONLINE_MEETING_PROVIDER'),
         ]);
         $request = Graph::instance()->createRequest('POST', "/users/{$userID}/events")->attachBody($event);
 

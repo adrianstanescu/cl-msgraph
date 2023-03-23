@@ -24,5 +24,6 @@
         <env name="AZURE_TENANT_ID" value="" />
         <env name="TEST_USER_ID" value="" />
         <env name="TEST_USER_EMAIL" value="" />
+        <env name="DEFAULT_ONLINE_MEETING_PROVIDER" value="teamsForBusiness" />
     </php>
 </phpunit>

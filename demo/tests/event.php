@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return (bool) $a;
         }),
         $_POST['location'],
+        $_POST['isOnlineMeeting'] === '1',
     );
 }
 
@@ -25,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <style>
     .form-layout {
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: 1fr 1fr;
         grid-gap: 0 2rem;
         grid-template-areas:
             "organizer location"
@@ -73,10 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" id="attendee-2" name="attendees[]">
             </label>
 
-            <label for="location" style="grid-area: location;">Location
-                <input type="text" id="location" name="location" required>
-            </label>
-
+            <div style="grid-area: location; display: flex; gap: 1rem;">
+                <label for="location">Location
+                    <input type="text" id="location" name="location" required>
+                </label>
+                <label for="isOnlineMeeting">
+                    Online Meeting<br />
+                    <input type="checkbox" id="isOnlineMeeting" name="isOnlineMeeting" value="1" role="switch">
+                </label>
+            </div>
             <button type="submit" style="grid-area: submit;">Create</button>
         </div>
     </form>
