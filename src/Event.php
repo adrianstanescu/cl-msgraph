@@ -4,67 +4,19 @@ declare(strict_types=1);
 
 namespace Adrian\CLMSGraph;
 
+use Adrian\CLMSGraph\Input\EventInput;
 use Adrian\CLMSGraph\Utils\DateTimeTimeZoneExtensions;
 use DateTime;
-use Microsoft\Graph\Model\Attendee;
-use Microsoft\Graph\Model\EmailAddress;
 use Microsoft\Graph\Model\Event as MSEvent;
-use Microsoft\Graph\Model\ItemBody;
-use Microsoft\Graph\Model\Location;
 
 class Event extends MSEvent {
     /**
      * @return Event
      */
-    public static function create(
-        string $userID,
-        DateTime $start,
-        DateTime $end,
-        string $subject,
-        string $body = '',
-        array $attendees = [],
-        ?string $location = null,
-        bool $isOnlineMeeting = false,
-        ?string $onlineMeetingProvider = null
-    ) {
-        $eventAttendees = array_map(function (string $a) {
-            return new Attendee([
-                'emailAddress' => new EmailAddress([
-                    'address' => $a,
-                ]),
-                'type' => 'required',
-            ]);
-        }, $attendees);
-        $eventLocation = null;
-        if ($location !== null) {
-            $eventLocation = new Location([
-                'displayName' => $location,
-            ]);
-            if (strpos($location, '@') !== false) {
-                $eventLocation->setLocationEmailAddress($location);
-                $eventAttendees[] = new Attendee([
-                    'emailAddress' => new EmailAddress([
-                        'address' => $location,
-                    ]),
-                    'type' => 'resource',
-                ]);
-            }
-        }
+    public static function create(EventInput $input) {
+        $event = $input->toMSGraph();
 
-        $event = new MSEvent([
-            'start' => DateTimeTimeZoneExtensions::fromDateTime($start),
-            'end' => DateTimeTimeZoneExtensions::fromDateTime($end),
-            'subject' => $subject,
-            'body' => new ItemBody([
-                'content' => $body,
-                'contentType' => 'text',
-            ]),
-            'attendees' => $eventAttendees,
-            'location' => $eventLocation,
-            'isOnlineMeeting' => $isOnlineMeeting,
-            'onlineMeetingProvider' => $onlineMeetingProvider ?? getenv('DEFAULT_ONLINE_MEETING_PROVIDER'),
-        ]);
-        $request = Graph::instance()->createRequest('POST', "/users/{$userID}/events")->attachBody($event);
+        $request = Graph::instance()->createRequest('POST', "/users/{$input->userID}/events")->attachBody($event);
 
         return $request->setReturnType(Event::class)->execute();
     }

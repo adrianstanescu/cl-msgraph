@@ -1,25 +1,33 @@
 <?php
 
 use Adrian\CLMSGraph\Event;
+use Adrian\CLMSGraph\Input\AttendeeInput;
+use Adrian\CLMSGraph\Input\BodyInput;
+use Adrian\CLMSGraph\Input\EventInput;
+use Adrian\CLMSGraph\Input\LocationInput;
 use Adrian\CLMSGraph\User;
-use DateTime;
 
 $currentUser = User::byID(getenv('TEST_USER_ID'));
 
 $createdEvent = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $createdEvent = Event::create(
+    $eventInput = (new EventInput(
         $currentUser->getId(),
         new DateTime($_POST['start']),
         new DateTime($_POST['end']),
-        $_POST['subject'],
-        $_POST['body'],
-        array_filter($_POST['attendees'], function ($a) {
-            return (bool) $a;
-        }),
-        $_POST['location'],
-        $_POST['isOnlineMeeting'] === '1',
-    );
+        $_POST['subject']
+    ))
+        ->withBody(new BodyInput($_POST['body']))
+        ->withLocation(new LocationInput($_POST['location']))
+        ->withIsOnlineMeeting($_POST['isOnlineMeeting'] === '1')
+    ;
+    foreach ($_POST['attendees'] ?? [] as $attendee) {
+        if (!$attendee) {
+            continue;
+        }
+        $eventInput->attendees[] = new AttendeeInput($attendee);
+    }
+    $createdEvent = Event::create($eventInput);
 }
 
 ?>
